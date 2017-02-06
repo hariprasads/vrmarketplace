@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>VR market Place</title>
+    
+    <!-- core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/prettyPhoto.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
+       <script src="js/jquery-2.2.3.js"></script>
+    <script src="js/aframe.js"></script>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->       
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+</head><!--/head-->
+
+<body>
+
+    <header id="header">
+        
+
+        <nav class="navbar navbar-inverse" role="banner">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">VR Market Place</a>
+                </div>
+				
+                <div class="collapse navbar-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                       <li  id="home"><a href="index.php">Home</a></li>
+                        <li><a href="about-us.html">About Us</a></li>
+						<li class="active"><a href="services.html">Services</a></li>
+						
+                      <li><a href="download.html">Download</a></li>
+                        
+                        
+                        <li><a href="blog.html">Dashboard</a></li> 
+                        <li><a href="contact-us.html">Contact Us</a></li>   
+ <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Translate <i class="fa fa-angle-down"></i></a>
+                            <ul class="dropdown-menu">
+							<li><a href="">English</a></li>
+                    
+                                <li><a href="">Chinese</a></li>
+                                <li><a href="">Hindi</a></li>
+                                
+                            </ul>
+							
+                        </li>	
+<li><a href="logout.html">Logout</a></li>  						
+                    </ul>
+                </div>
+            </div><!--/.container-->
+        </nav><!--/nav-->
+		
+    </header><!--/header-->
+
+
+    <section id="feature" class="transparent-bg">
+        <div class="container">
+           
+
+            
+			
+			<a-scene>
+    <a-assets>
+        <img id="stadium" src="images/stadium.jpg">
+        <video id="game1" preload="auto" src="videos/TiltBrush.mp4" width="260" height="200"></video>
+        <video id="game2" preload="auto" src="videos/MazeRunner.mp4" width="260" height="200"></video>
+        <video id="game3" preload="auto" src="https://s3-us-west-1.amazonaws.com/www.rickroulette.com/rickroll.mp4" width="260" height="200"></video>
+    </a-assets>
+    <a-entity position="0 2.0 0">
+        <a-entity camera look-controls>
+            <a-cursor color="#ffffff">
+            <a-animation begin="cursor-mouseenter" easing="ease-in" attribute="scale" fill="forwards" from="1 1 1" to="0.1 0.1 0.1"></a-animation>
+            <a-animation begin="cursor-mouseenter" easing="ease-in" attribute="material.opacity" fill="forwards" from="1" to="0"></a-animation>
+            <a-animation begin="cursor-mouseleave" easing="ease-in" attribute="scale" fill="forwards" from="0.1 0.1 0.1" to="1 1 1"></a-animation>
+            <a-animation begin="cursor-mouseleave" easing="ease-in" attribute="material.opacity" fill="forwards" from="0" to="1"></a-animation>
+            </a-cursor>
+        </a-entity>
+    </a-entity>
+    <a-sky src="#stadium" rotation="0 -180 -2.4"></a-sky>
+    <a-cylinder position="0 0 0" radius="1" height="1" color="#7BC8A4"></a-cylinder>
+    <a-entity data-video-source="game1" class="soccer-video" geometry="primitive: plane; width: 38.4; height: 26;" position="-55 11 -60" rotation="0 35 0" material="color: #FFFFFF; shader: flat; src: #game1"></a-entity>
+    <a-entity data-video-source="game2" class="soccer-video" geometry="primitive: plane; width: 38.4; height: 26;" position="0 11 -68" rotation="0 0 0" material="color: #FFFFFF; shader: flat; src: #game2"></a-entity>
+    <a-entity data-video-source="game3" class="soccer-video" geometry="primitive: plane; width: 38.4; height: 26;" position="55 11 -80" rotation="0 -35 0" material="color: #FFFFFF; shader: flat; src: #game3"></a-entity>
+</a-scene>
+<script>
+    $(document).ready(function () {
+        var scene = document.querySelector('a-scene');
+
+        if (scene.hasLoaded) {
+            run();
+        } else {
+            scene.addEventListener('loaded', run);
+        }
+
+        function run()
+        {
+            $("a-entity.soccer-video").each(function () {
+                var aEntity = $(this);
+                var videoSource = aEntity.data('videoSource');
+                var videoDom = $('#' + videoSource).get(0);
+                videoDom.volume = 0;
+                videoDom.play();
+
+                aEntity.on('cursor-mouseenter', function () {
+                    videoDom.volume = 1;
+                }).on('cursor-mouseleave', function () {
+                    videoDom.volume = 0;
+                });
+
+            });
+
+        }
+    });
+
+</script>
+
+			
+			
+			
+			
+
+        </div><!--/.container-->
+    </section><!--/#feature-->
+
+
+   
+
+    <footer id="footer" class="midnight-blue">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 foot-middle">
+                    &copy; 2016 <a target="_blank" href="" title="">VR Market Place</a>. All Rights Reserved.
+                </div>
+                
+            </div>
+        </div>
+    </footer><!--/#footer-->
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.prettyPhoto.js"></script>
+    <script src="js/jquery.isotope.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/wow.min.js"></script>
+</body>
+</html>

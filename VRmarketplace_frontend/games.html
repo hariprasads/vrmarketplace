@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Shoot it out </title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <meta name="description" content="Shootout">
+    <script src="js/aframe-core.js"></script>
+    <script src="js/wasd-controls.js"></script>
+</head>
+<body background="images/bg.jpg">		
+	<div class="score">Score: 0</div>
+    <div class="screen title-screen">
+      <div class="title">Shoot it out</div>
+      <div class="start blink">Click to Start</div>
+      <div class="instructions">AD keys to move and click to shoot</div>
+    </div>
+    <div class="screen end-screen">
+      <div class="end">Samshed Everything !!! Get Ready for Maze Runner</div>
+    </div>
+    <a-scene>
+      <a-assets>
+      <a-sky color="#6EBAA7"></a-sky>
+        <a-mixin id="cube"
+                 geometry="primitive: box; height: 3; width: 2; depth: 2;"
+                 material="color: #167341; roughness: 1.0; metalness: 0.2;">AAAAAA</a-mixin>
+        <a-mixin id="laser"
+                 geometry="primitive: box; height: 4; width: 0.1; depth: 0.1"
+                 material="color: yellow;"
+                 laser-behavior collider></a-mixin>
+        <a-mixin id="enemy" explode="on: hit"></a-mixin>
+        <a-mixin id="cylinder"
+         geometry="primitive: cylinder; height: 2; width: 2; depth: 2;"
+        material="color: #167341; roughness: 1.0; metalness: 0.2;"></a-mixin>
+        <a-mixin id="sphere"
+         geometry="primitive: sphere; height: 2; width: 2; depth: 2;"
+        material="color: #167341; roughness: 1.0; metalness: 0.2;"></a-mixin>
+                <a-mixin id="cone"
+         geometry="primitive: cone; height: 3; width: 2; depth: 2;"
+        material="color: #167341; roughness: 1.0; metalness: 0.2;"></a-mixin>
+      </a-assets>
+
+      <a-entity position="0 0 20">
+        <a-entity camera="fov: 60"></a-entity>
+      </a-entity>
+      <a-entity id="river" geometry="primitive: plane" material="color:white"
+          position="-10 0 0" sound="src: https://s3-us-west-1.amazonaws.com/www.rickroulette.com/rickroll.mp4; autoplay: true"></a-entity>
+      <a-entity mixin="cube enemy" material="color: orange" rotation="45 90 180" position="-14 5 -10"></a-entity>
+      <a-entity mixin="cube enemy" material="color: white" rotation="45 90 180" position="-10.5 5 -10"></a-entity>
+      <a-entity mixin="cone enemy" material="color: blue" rotation="45 90 180" position="-7 5 -10"></a-entity>
+      <a-entity mixin="cylinder enemy" material="color: pink" position="-3.5 5 -10"></a-entity>
+      <a-entity mixin="cube enemy" material="color: red" position="0 5 -10"></a-entity>
+      <a-entity mixin="cylinder enemy" material="color: purple" position="3.5 5 -10"></a-entity>
+      <a-entity mixin="cube enemy" material="color: yellow" position="7 5 -10"></a-entity>
+      <a-entity mixin="cone enemy" material="color: red" position="10.5 5 -10"></a-entity>
+      <a-entity mixin="sphere enemy" material="color: brown" position="14 5 -10"></a-entity>
+      <a-entity mixin="cube"
+                wasd-controls="acceleration: 400; wsEnabled: false"
+                position="0 -10 -10"
+                spawner="mixin: laser; on: mousedown"
+                cursor></a-entity>
+    </a-scene>
+    <script>
+      var titleEl = document.querySelector('.title-screen');
+      var endEl = document.querySelector('.end-screen');
+      var enemies = document.querySelectorAll('[mixin="cube enemy"]');
+      var enemies1 = document.querySelectorAll('[mixin="cylinder enemy"]');
+      var enemies2 = document.querySelectorAll('[mixin="sphere enemy"]');
+      var enemies3 = document.querySelectorAll('[mixin="cone enemy"]');
+      var deadEnemies = [];
+      var scoreEl = document.querySelector('.score');
+      var score = 0;
+      var increaseCounter = function(e) {
+        var enemy = e.currentTarget;
+        if (deadEnemies.indexOf(enemy) != -1) { return; }
+        deadEnemies.push(enemy);
+        score+=1;
+        scoreEl.innerHTML = 'Score: ' + score;
+        if (enemies.length === deadEnemies.length) {
+          endEl.style.display = 'block';
+        }
+      }
+      titleEl.addEventListener('click', function() { titleEl.style.display = 'none'; });
+      enemies = Array.prototype.slice.call(enemies);
+      enemies.forEach(function(enemyEl) {
+        enemyEl.addEventListener('hit', increaseCounter);
+      });
+    </script>
+		
+</body>
+</html>
